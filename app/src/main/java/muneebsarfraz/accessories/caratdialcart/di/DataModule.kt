@@ -1,0 +1,36 @@
+package muneebsarfraz.accessories.caratdialcart.di
+
+import muneebsarfraz.accessories.caratdialcart.data.repository.CartRepository
+import muneebsarfraz.accessories.caratdialcart.data.repository.OnboardingRepository
+import muneebsarfraz.accessories.caratdialcart.data.repository.OrderRepository
+import muneebsarfraz.accessories.caratdialcart.data.repository.ProductRepository
+
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+
+val dataModule = module {
+    includes(databaseModule, dataStoreModule)
+
+    single {
+        OnboardingRepository(
+            onboardingDataStoreManager = get(),
+            coroutineDispatcher = get(named("IO"))
+        )
+    }
+
+    single { ProductRepository() }
+
+    single {
+        CartRepository(
+            cartItemDao = get(),
+            coroutineDispatcher = get(named("IO"))
+        )
+    }
+
+    single {
+        OrderRepository(
+            orderDao = get(),
+            coroutineDispatcher = get(named("IO"))
+        )
+    }
+}
